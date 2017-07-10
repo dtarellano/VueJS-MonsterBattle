@@ -27,8 +27,8 @@
         <div class="small-12 columns">
             <button v-on:click="normalDmg" id="attack">ATTACK</button>
             <button v-on:click="specialDmg" id="special-attack">SPECIAL ATTACK</button>
-            <button v-on:click="iNeedHealing"id="heal">HEAL</button>
-            <button id="give-up">GIVE UP</button>
+            <button v-on:click="iNeedHealing" id="heal">HEAL</button>
+            <button v-on:click="giveUp" id="give-up">GIVE UP</button>
         </div>
     </section>
     <section class="row log">
@@ -57,14 +57,58 @@ export default {
       normalDmg() {
          this.monster = this.monster - Math.floor(Math.random() * 10);
          this.player = this.player - Math.floor(Math.random() * 10);
+         if (this.monster <= 0) {
+            this.monster = 0;
+            alert("You Win");
+            this.player = 100;
+            this.monster = 100;
+            this.show = true;
+         }
+         if (this.player <= 0) {
+            this.player = 0;
+            alert("You Lose");
+            this.player = 100;
+            this.monster = 100;
+            this.show = true;
+         }
       },
       specialDmg() {
          this.monster = this.monster - Math.floor(Math.random() * 20);
          this.player = this.player - Math.floor(Math.random() * 20);
+         if (this.monster <= 0) {
+            this.monster = 0;
+            alert("You Win");
+            this.player = 100;
+            this.monster = 100;
+            this.show = true;
+         }
+         if (this.player <= 0) {
+            this.player = 0;
+            alert("You Lose");
+            this.player = 100;
+            this.monster = 100;
+            this.show = true;
+         }
       },
       iNeedHealing() {
          this.player = this.player + Math.floor(Math.random() * 10);
          this.player = this.player - Math.floor(Math.random() * 10);
+
+         if (this.player > 100) {
+            this.player = 100;
+         }
+         if (this.player <= 0) {
+            this.player = 0;
+            alert("You Lose");
+            this.player = 100;
+            this.monster = 100;
+            this.show = true;
+         }
+      },
+      giveUp() {
+         this.player = 100;
+         this.monster = 100;
+         this.show = true;
       }
    },
    computed: {

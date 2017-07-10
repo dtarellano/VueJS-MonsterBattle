@@ -1,6 +1,6 @@
 # vue-battle
 
-> A Vue.js project.  This is a exercise built to put all the tings I have learned with VueJS so far. The HTML and CSS was pre built by Instructor. All the Javascript will be written by me.
+> A Vue.js project.  This is a exercise built to put all the things I have learned with VueJS so far. The HTML and CSS were pre built by the Instructor. All the Javascript was written by me.
 
 ## Build Setup
 
