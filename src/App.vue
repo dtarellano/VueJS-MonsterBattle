@@ -2,32 +2,32 @@
   <div id="app">
      <section class="row">
         <div class="small-6 columns">
-            <h1 class="text-center">YOU</h1>
+            <h1 class="text-center">Player</h1>
             <div class="healthbar">
-                <div class="healthbar text-center" style="background-color: green; margin: 0; color: white;">
-
+                <div class="healthbar text-center" :style="myStyle" style="background-color: green; margin: 0; color: white;">
+                  {{ player }}
                 </div>
             </div>
         </div>
         <div class="small-6 columns">
             <h1 class="text-center">MONSTER</h1>
             <div class="healthbar">
-                <div class="healthbar text-center" style="background-color: green; margin: 0; color: white;">
-
+                <div class="healthbar text-center" :style="monsterStyle" style="background-color: green; margin: 0; color: white;">
+                  {{ monster }}
                 </div>
             </div>
         </div>
     </section>
-    <section class="row controls">
+    <section v-if="show" class="row controls">
         <div class="small-12 columns">
-            <button id="start-game">START NEW GAME</button>
+            <button v-on:click="show = !show" id="start-game">START NEW GAME</button>
         </div>
     </section>
-    <section class="row controls">
+    <section v-else class="row controls">
         <div class="small-12 columns">
-            <button id="attack">ATTACK</button>
-            <button id="special-attack">SPECIAL ATTACK</button>
-            <button id="heal">HEAL</button>
+            <button v-on:click="normalDmg" id="attack">ATTACK</button>
+            <button v-on:click="specialDmg" id="special-attack">SPECIAL ATTACK</button>
+            <button v-on:click="iNeedHealing"id="heal">HEAL</button>
             <button id="give-up">GIVE UP</button>
         </div>
     </section>
@@ -48,37 +48,35 @@ export default {
    name: "app",
    data() {
       return {
-         msg: "Welcome to Your Vue.js App"
+         show: true,
+         player: 100,
+         monster: 100
       };
+   },
+   methods: {
+      normalDmg() {
+         this.monster = this.monster - Math.floor(Math.random() * 10);
+         this.player = this.player - Math.floor(Math.random() * 10);
+      },
+      specialDmg() {
+         this.monster = this.monster - Math.floor(Math.random() * 20);
+         this.player = this.player - Math.floor(Math.random() * 20);
+      },
+      iNeedHealing() {
+         this.player = this.player + Math.floor(Math.random() * 10);
+         this.player = this.player - Math.floor(Math.random() * 10);
+      }
+   },
+   computed: {
+      monsterStyle() {
+         return { width: this.monster + "%" };
+      },
+      myStyle() {
+         return { width: this.player + "%" };
+      }
    }
 };
 </script>
 
 <style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-
-h1, h2 {
-  font-weight: normal;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-
-a {
-  color: #42b983;
-}
 </style>
