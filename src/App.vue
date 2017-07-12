@@ -31,17 +31,13 @@
             <button v-on:click="giveUp" id="give-up">GIVE UP</button>
         </div>
     </section>
-    <section class="row log">
+    <section class="row log" v-if="this.list.length > 0">
         <div class="small-12 columns">
-          <ul class="log ul monster-turn"v-for="mun in mList">
-
-                <li class="log ul player-turn"v-for="item in list">
-                  you took {{  }} of damage
-                </li>
-                <li>
-                  The monster took {{ mun }} of damage
-                </li>
-            </ul>
+         <ul class="log ul monster-turn" >
+                <li class="log ul player-turn" v-for="item in list">
+                   {{ item }}
+               </li>
+         </ul>
         </div>
     </section>
   </div>
@@ -55,18 +51,11 @@ export default {
          show: true,
          player: 100,
          monster: 100,
-         list: [],
-         mList: []
+         list: []
       };
    },
    methods: {
-      normalDmg() {
-         const random = Math.floor(Math.random() * 10);
-         const mRandom = Math.floor(Math.random() * 10);
-         this.monster = this.monster - mRandom;
-         this.player = this.player - random;
-         this.list.unshift(mRandom);
-         this.mList.unshift(mRandom);
+      winCheck() {
          if (this.monster <= 0) {
             this.monster = 0;
             alert("You Win");
@@ -76,6 +65,8 @@ export default {
             this.list = [];
             this.mList = [];
          }
+      },
+      loseCheck() {
          if (this.player <= 0) {
             this.player = 0;
             alert("You Suck, Loser!");
@@ -85,39 +76,41 @@ export default {
             this.list = [];
             this.mList = [];
          }
+      },
+      normalDmg() {
+         const dmgToPlayer = Math.floor(Math.random() * 10);
+         const dmgToMonster = Math.floor(Math.random() * 10);
+
+         this.monster = this.monster - dmgToMonster;
+         this.player = this.player - dmgToPlayer;
+         this.list.unshift(`The Player did ${dmgToMonster} Damage to Monster`);
+         this.list.unshift(`The Monster did ${dmgToPlayer} Damage to Player`);
+
+         this.winCheck();
+         this.loseCheck();
       },
       specialDmg() {
-         this.monster = this.monster - Math.floor(Math.random() * 20);
-         this.player = this.player - Math.floor(Math.random() * 20);
-         if (this.monster <= 0) {
-            this.monster = 0;
-            alert("You Win");
-            this.player = 100;
-            this.monster = 100;
-            this.show = true;
-         }
-         if (this.player <= 0) {
-            this.player = 0;
-            alert("You Suck, Loser!");
-            this.player = 100;
-            this.monster = 100;
-            this.show = true;
-         }
+         const specialMonster = Math.floor(Math.random() * 20);
+         const dmgToPlayer = Math.floor(Math.random() * 10);
+         this.monster -= specialMonster;
+         this.player -= dmgToPlayer;
+         this.list.unshift(
+            `The Player did ${specialMonster} Damage to Monster`
+         );
+         this.list.unshift(`The Monster did ${dmgToPlayer} Damage to Player`);
+
+         this.winCheck();
+         this.looseCheck();
       },
       iNeedHealing() {
-         this.player = this.player + Math.floor(Math.random() * 10);
-         this.player = this.player - Math.floor(Math.random() * 10);
+         const dmgToPlayer = Math.floor(Math.random() * 10);
+         this.player += 10;
+         this.player -= dmgToPlayer;
+         this.list.unshift("The Player Gained 10 HP");
+         this.list.unshift(`The Monster did ${dmgToPlayer} Damage to Player`);
 
-         if (this.player > 100) {
-            this.player = 100;
-         }
-         if (this.player <= 0) {
-            this.player = 0;
-            alert("You Suck, Loser!");
-            this.player = 100;
-            this.monster = 100;
-            this.show = true;
-         }
+         this.winCheck();
+         this.looseCheck();
       },
       giveUp() {
          this.player = 100;
@@ -137,6 +130,3 @@ export default {
    }
 };
 </script>
-
-<style>
-</style>
